@@ -131,7 +131,7 @@ class CarInterfaceBase():
     self.steering_unpressed = 0 if cs_out.steeringPressed else self.steering_unpressed + 1
 
     # Handle permanent and temporary steering faults
-    if cs_out.steerError:
+    if cs_out.steerError and self.disengage_on_gas:
       events.add(EventName.steerUnavailable)
     elif cs_out.steerWarning:
       # only escalate to the harsher alert after the condition has
