@@ -29,6 +29,8 @@ class CarInterfaceBase():
     self.CP = CP
     self.VM = VehicleModel(CP)
 
+    self.disengage_on_gas = False
+    
     self.frame = 0
     self.steer_warning = 0
     self.steering_unpressed = 0
@@ -110,7 +112,7 @@ class CarInterfaceBase():
       events.add(EventName.wrongCarMode)
     if cs_out.espDisabled:
       events.add(EventName.espDisabled)
-    if cs_out.gasPressed:
+    if cs_out.gasPressed and self.disengage_on_gas:
       events.add(EventName.gasPressed)
     if cs_out.stockFcw:
       events.add(EventName.stockFcw)
@@ -125,7 +127,7 @@ class CarInterfaceBase():
     self.steering_unpressed = 0 if cs_out.steeringPressed else self.steering_unpressed + 1
 
     # Handle permanent and temporary steering faults
-    if cs_out.steerError:
+    if cs_out.steerError and self.disengage_on_gas:
       events.add(EventName.steerUnavailable)
     elif cs_out.steerWarning:
       # only escalate to the harsher alert after the condition has
@@ -138,7 +140,7 @@ class CarInterfaceBase():
     # Disable on rising edge of gas or brake. Also disable on brake when speed > 0.
     # Optionally allow to press gas at zero speed to resume.
     # e.g. Chrysler does not spam the resume button yet, so resuming with gas is handy. FIXME!
-    if (cs_out.gasPressed and (not self.CS.out.gasPressed) and cs_out.vEgo > gas_resume_speed) or \
+    if (self.disengage_on_gas and cs_out.gasPressed and (not self.CS.out.gasPressed) and cs_out.vEgo > gas_resume_speed) or \
        (cs_out.brakePressed and (not self.CS.out.brakePressed or not cs_out.standstill)):
       events.add(EventName.pedalPressed)
 
