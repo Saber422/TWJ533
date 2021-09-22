@@ -59,7 +59,11 @@ class CarInterface(CarInterfaceBase):
 
     # Per-chassis tuning values, override tuning defaults here if desired
 
-    if candidate == CAR.ATLAS_MK1:
+    if candidate == CAR.ARTEON_MK1:
+      ret.mass = 1733 + STD_CARGO_KG
+      ret.wheelbase = 2.84
+
+    elif candidate == CAR.ATLAS_MK1:
       ret.mass = 2011 + STD_CARGO_KG
       ret.wheelbase = 2.98
 
@@ -87,6 +91,10 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 1516 + STD_CARGO_KG
       ret.wheelbase = 2.79
 
+    elif candidate == CAR.TRANSPORTER_T61:
+      ret.mass = 1926 + STD_CARGO_KG
+      ret.wheelbase = 3.00  # SWB, LWB is 3.40, TBD how to detect difference
+
     elif candidate == CAR.AUDI_A3_MK3:
       ret.mass = 1335 + STD_CARGO_KG
       ret.wheelbase = 2.61
@@ -102,6 +110,14 @@ class CarInterface(CarInterfaceBase):
     elif candidate == CAR.SEAT_LEON_MK3:
       ret.mass = 1227 + STD_CARGO_KG
       ret.wheelbase = 2.64
+
+    elif candidate == CAR.SKODA_KAMIQ_MK1:
+      ret.mass = 1265 + STD_CARGO_KG
+      ret.wheelbase = 2.66
+
+    elif candidate == CAR.SKODA_KAROQ_MK1:
+      ret.mass = 1278 + STD_CARGO_KG
+      ret.wheelbase = 2.66
 
     elif candidate == CAR.SKODA_KODIAQ_MK1:
       ret.mass = 1569 + STD_CARGO_KG
